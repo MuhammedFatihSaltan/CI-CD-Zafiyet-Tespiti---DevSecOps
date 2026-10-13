@@ -41,3 +41,20 @@ jobs:
 
       - name: Run Semgrep with Strict Security Gate
         run: semgrep scan --config="p/default" --exclude=".github" --error
+
+  trivy:
+    name: Trivy Dependency Scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          ignore-unfixed: true
+          format: 'table'
+          # CRITICAL ve HIGH seviyesinde bulgu varsa pipeline'ı durdur (exit-code 1)
+          exit-code: '1'
+          severity: 'CRITICAL,HIGH'
