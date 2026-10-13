@@ -55,6 +55,23 @@ jobs:
           scan-type: 'fs'
           ignore-unfixed: true
           format: 'table'
-          # CRITICAL ve HIGH seviyesinde bulgu varsa pipeline'ı durdur (exit-code 1)
+          exit-code: '1'
+          severity: 'CRITICAL,HIGH'
+
+  docker-scan:
+    name: Trivy Container Image Scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build Docker Image
+        run: docker build -t secureflow-demo:latest .
+
+      - name: Run Trivy vulnerability scanner on Image
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'secureflow-demo:latest'
+          format: 'table'
           exit-code: '1'
           severity: 'CRITICAL,HIGH'
