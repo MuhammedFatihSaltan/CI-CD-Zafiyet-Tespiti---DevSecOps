@@ -31,7 +31,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Run Semgrep
-        uses: returntocorp/semgrep-action@v1
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          config: "p/default"
+          python-version: "3.11"
+
+      - name: Install Semgrep
+        run: pip install semgrep
+
+      - name: Run Semgrep with Strict Security Gate
+        # --error parametresi, herhangi bir bulgu varsa pipeline'ı HATA vererek (kırmızı çarpı) durdurur.
+        run: semgrep scan --config="p/default" --error
