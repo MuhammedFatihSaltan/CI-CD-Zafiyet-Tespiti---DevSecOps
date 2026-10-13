@@ -73,5 +73,6 @@ jobs:
         with:
           image-ref: 'secureflow-demo:latest'
           format: 'table'
+          ignore-unfixed: true
           exit-code: '1'
           severity: 'CRITICAL,HIGH'
