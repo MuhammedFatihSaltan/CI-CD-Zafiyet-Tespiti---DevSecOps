@@ -1,5 +1,7 @@
-# Güvenli ve küçük bir temel imaj seçiyoruz
 FROM python:3.11-slim
+
+# Trivy'nin yakaladığı OS seviyesindeki bilinen zafiyetleri yamamak için sistemi güncelliyoruz
+RUN apt-get update && apt-get upgrade -y && rm -rf /var/lib/apt/lists/*
 
 # Root olmayan yetkisiz bir kullanıcı oluştur (Güvenlik gereksinimi)
 RUN useradd -m -s /bin/bash appuser
