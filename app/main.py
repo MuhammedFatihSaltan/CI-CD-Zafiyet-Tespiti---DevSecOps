@@ -1,4 +1,3 @@
-import hashlib
 from fastapi import FastAPI
 
 app = FastAPI(
@@ -12,9 +11,9 @@ def health_check():
     """Sistemin ayakta olup olmadığını kontrol eden endpoint."""
     return {"status": "ok", "message": "Service is running securely."}
 
-@app.get("/insecure-hash")
-def generate_hash(data: str):
-    """Bilinçli Zafiyet: Zayıf ve kırılmış MD5 algoritması kullanımı."""
-    # Semgrep bu satırı tehlikeli bulup pipeline'ı durdurmalıdır!
-    md5_hash = hashlib.md5(data.encode()).hexdigest()
-    return {"hash": md5_hash}
+@app.get("/rce-test")
+def rce_vulnerability(user_input: str):
+    """Bilinçli Zafiyet: Uzaktan Kod Çalıştırma (RCE) - Semgrep kesin yakalar."""
+    # eval() dışarıdan gelen veriyi güvenlik kontrolü yapmadan çalıştırır!
+    sonuc = eval(user_input)
+    return {"result": sonuc}
