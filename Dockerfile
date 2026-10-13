@@ -1,10 +1,11 @@
-FROM python:3.11-slim
+# Güvenlik açısından en temiz taban olan Alpine Linux'a geçiyoruz
+FROM python:3.11-alpine
 
-# Trivy'nin yakaladığı OS seviyesindeki bilinen zafiyetleri yamamak için sistemi güncelliyoruz
-RUN apt-get update && apt-get upgrade -y && rm -rf /var/lib/apt/lists/*
+# Alpine'in kendi paket yöneticisi (apk) ile sistemi güncelliyoruz
+RUN apk update && apk upgrade --no-cache
 
-# Root olmayan yetkisiz bir kullanıcı oluştur (Güvenlik gereksinimi)
-RUN useradd -m -s /bin/bash appuser
+# Root olmayan yetkisiz bir kullanıcı oluştur (Alpine formatı)
+RUN adduser -D appuser
 
 WORKDIR /app
 
