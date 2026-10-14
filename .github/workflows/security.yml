@@ -76,3 +76,19 @@ jobs:
           ignore-unfixed: true
           exit-code: '1'
           severity: 'CRITICAL,HIGH'
+
+      - name: Run Trivy for JSON Report
+        uses: aquasecurity/trivy-action@master
+        if: always()
+        with:
+          image-ref: 'secureflow-demo:latest'
+          format: 'json'
+          output: 'trivy-image-report.json'
+          ignore-unfixed: true
+
+      - name: Upload Security Report Artifact
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: container-security-report
+          path: trivy-image-report.json
